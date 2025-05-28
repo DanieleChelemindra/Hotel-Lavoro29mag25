@@ -6,42 +6,28 @@ import model.Camera;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class CameraRepositoryImpl implements CameraRepository {
-    private CameraFileDAO cameraDAO;
+public class CameraRepositoryImpl extends AbstractCameraRepository {
+
     private Scanner scanner;
 
     public CameraRepositoryImpl(CameraFileDAO cameraDAO) {
-        this.cameraDAO = cameraDAO;
+        super(cameraDAO);
         this.scanner = new Scanner(System.in);
     }
 
     @Override
-    public void salva(Camera camera) {
-        cameraDAO.aggiungiCamera(camera);
-    }
-
-    @Override
-    public Camera trovaPerNumero(int numero) {
-        return cameraDAO.trovaCameraPerNumero(numero);
-    }
-
-    @Override
-    public Vector<Camera> trovaTutte() {
-        return cameraDAO.trovaTutte();
-    }
-
     public void aggiungiCameraDaInput() {
-        System.out.print("Numero camera: ");
+        System.out.print("numero camera: ");
         int numero = Integer.parseInt(scanner.nextLine());
 
         if (trovaPerNumero(numero) != null) {
-            System.out.println("️camera già esistente.");
+            System.out.println("camera già esistente.");
             return;
         }
 
-        System.out.print("Tipo camera: ");
+        System.out.print("tipo camera: ");
         String tipo = scanner.nextLine();
-        System.out.print("Prezzo camera: ");
+        System.out.print("prezzo camera: ");
         double prezzo = Double.parseDouble(scanner.nextLine());
 
         Camera camera = new Camera(numero, tipo, prezzo);
@@ -49,10 +35,11 @@ public class CameraRepositoryImpl implements CameraRepository {
         System.out.println("camera salvata: " + camera);
     }
 
+    @Override
     public void visualizzaCamere() {
         Vector<Camera> camere = trovaTutte();
         if (camere.isEmpty()) {
-            System.out.println("Nessuna Camera trovata.");
+            System.out.println("nessuna camera trovata.");
         } else {
             for (Camera c : camere) {
                 System.out.println(c);
@@ -60,8 +47,9 @@ public class CameraRepositoryImpl implements CameraRepository {
         }
     }
 
+    @Override
     public void cambiaStatoCamera() {
-        System.out.print("Numero camera da modificare: ");
+        System.out.print("numero camera da modificare: ");
         int numero = Integer.parseInt(scanner.nextLine());
 
         Vector<Camera> camere = trovaTutte();
@@ -71,21 +59,24 @@ public class CameraRepositoryImpl implements CameraRepository {
                 camera.setOccupata(!camera.isOccupata());
                 camere.set(i, camera);
                 cameraDAO.salvaTutte(camere);
-                System.out.println("Stato aggiornato.");
+                System.out.println("stato aggiornato.");
                 return;
             }
         }
 
-        System.out.println("Camera non trovata.");
+        System.out.println("camera non trovata.");
     }
 
+    @Override
     public void resetCamere() {
         cameraDAO.resetFile();
+        System.out.println("file camere.dat resettato.");
     }
 
+    @Override
     public void caricaCamereDaFile() {
         Vector<Camera> camere = trovaTutte();
-        System.out.println("Camere caricate da file:");
+        System.out.println("camere caricate da file:");
         for (Camera c : camere) {
             System.out.println(c);
         }

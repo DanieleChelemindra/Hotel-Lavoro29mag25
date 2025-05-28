@@ -4,10 +4,12 @@ import model.Camera;
 import java.util.Vector;
 
 public interface CameraRepository {
-
-    void salva(Camera camera);
-
-    Camera trovaPerNumero(int numero);
-
+    void aggiungiCameraDaInput();
+    void visualizzaCamere();
+    void cambiaStatoCamera();
+    void resetCamere();
+    void caricaCamereDaFile();
     Vector<Camera> trovaTutte();
+    Camera trovaPerNumero(int numero);
+    void salva(Camera camera);
 }
