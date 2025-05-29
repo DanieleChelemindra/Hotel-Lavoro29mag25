@@ -1,55 +1,67 @@
-import dao.CameraFileDAO;
-import repository.CameraRepositoryImpl;
+    import dao.CameraFileDAO;
+    import repository.CameraRepositoryImpl;
+    import java.util.Scanner;
 
-import java.util.Scanner;
+    public class Main {
+        public static void main(String[] args) {
 
-public class Main {
-    public static void main(String[] args) {
-        CameraRepositoryImpl
-                repository = new CameraRepositoryImpl(new CameraFileDAO());
-        Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
-        String[] menuOpzioni = {
-                "1. Aggiungi camera",
-                "2. Visualizza camere",
-                "3. Cambia stato camera",
-                "4. Reset file camere",
-                "5. Carica camere da file",
-                "6. Esci"
-        };
+            // crea un oggetto repository usando il file dao
+            CameraRepositoryImpl repository = new CameraRepositoryImpl(new CameraFileDAO());
 
-        while (!exit) {
-            System.out.println("\n--- Menu Hotel ------------");
-            for (String opzione : menuOpzioni) {
-                System.out.println(opzione);
+            // oggetto scanner per leggere da tastiera
+            Scanner scanner = new Scanner(System.in);
+
+            // variabile per controllare se uscire dal ciclo
+            boolean exit = false;
+
+            // array con le tutte l opzioni del menu
+            String[] menuOpzioni = {
+                    "1. aggiungi camera",
+                    "2. visualizza camere",
+                    "3. cambia stato camera",
+                    "4. reset file camere",
+                    "5. carica camere da file",
+                    "6. esci"
+            };
+
+            // ciclo principale finché l utente non sceglie di uscire
+            while (!exit) {
+
+                // stampa il menu
+                System.out.println("\n--- menu hotel ------------");
+                for (String opzione : menuOpzioni) {
+                    System.out.println(opzione);
+                }
+
+                // legge la scelta del utente
+                String scelta = scanner.nextLine();
+
+                // esegue un azione in base alla scelta usando uno switch
+                switch (scelta) {
+                    case "1":
+                        repository.aggiungiCameraDaInput(); // aggiunge una nuova camera
+                        break;
+                    case "2":
+                        repository.visualizzaCamere(); // mostra tutte le camere
+                        break;
+                    case "3":
+                        repository.cambiaStatoCamera(); // cambia lo stato di una camera
+                        break;
+                    case "4":
+                        repository.resetCamere(); // resetta il file delle camere
+                        break;
+                    case "5":
+                        repository.caricaCamereDaFile(); // carica le camere dal file
+                        break;
+                    case "6":
+                        exit = true; // esce dal programma
+                        break;
+                    default:
+                        System.out.println("scelta non valida"); // messaggio per scelta sbagliata
+                }
             }
 
-            String scelta = scanner.nextLine();
-
-            switch (scelta) {
-                case "1":
-                    repository.aggiungiCameraDaInput();
-                    break;
-                case "2":
-                    repository.visualizzaCamere();
-                    break;
-                case "3":
-                    repository.cambiaStatoCamera();
-                    break;
-                case "4":
-                    repository.resetCamere();
-                    break;
-                case "5":
-                    repository.caricaCamereDaFile();
-                    break;
-                case "6":
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("scelta non valida.");
-            }
+            // chiude lo scanner
+            scanner.close();
         }
-
-        scanner.close();
     }
-}

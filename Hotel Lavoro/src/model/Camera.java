@@ -1,8 +1,11 @@
 package model;
 
 import java.io.Serializable;
-
+// La classe Camera implementa Serializable per poter salvare gli oggetti su file
+// e rileggerli in un secondo momento
+//Senza questa interfaccia Java non può salvare l’oggetto come dati su disco.
 public class Camera implements Serializable {
+
     private int numero;
     private String tipo;
     private double prezzo;
